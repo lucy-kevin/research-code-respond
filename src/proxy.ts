@@ -1,8 +1,9 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createServerClient } from "@supabase/ssr";
+import { normalizeSupabaseUrl } from "@/lib/supabase/url";
 
 export async function proxy(req: NextRequest) {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const url = normalizeSupabaseUrl(process.env.NEXT_PUBLIC_SUPABASE_URL);
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
   // Admin portal is disabled until Supabase is configured.

@@ -1,4 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
+import { normalizeSupabaseUrl } from "@/lib/supabase/url";
 import { FELLOWS as LOCAL_FELLOWS, type Fellow } from "@/data/fellows";
 
 interface FellowRow {
@@ -20,7 +21,7 @@ interface FellowRow {
  * the site keeps working before the backend exists.
  */
 export async function getFellows(): Promise<Fellow[]> {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const url = normalizeSupabaseUrl(process.env.NEXT_PUBLIC_SUPABASE_URL);
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   if (!url || !key) return LOCAL_FELLOWS;
 
