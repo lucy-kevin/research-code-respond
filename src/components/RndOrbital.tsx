@@ -91,8 +91,8 @@ export default function RndOrbital() {
     <section className="bg-[#FAF9F5] px-6 pb-28 lg:px-8">
       <div className="mx-auto max-w-7xl">
         <div className="mb-10 max-w-2xl">
-          <h2 className="text-2xl font-medium tracking-tight text-[#1A1A1A] sm:text-3xl">
-            The pipeline, live.
+          <h2 className="font-display text-3xl uppercase tracking-tight text-[#1A1A1A] sm:text-4xl">
+            The pipeline, live
           </h2>
           <p className="mt-4 text-base leading-relaxed text-[#6B7280]">
             Every research project moves through the same six stages. Click a

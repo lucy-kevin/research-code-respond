@@ -167,7 +167,7 @@ export default function FellowsGrid({
               layoutId={`fellow-${selected.name}`}
               transition={{ duration: 0.5, ease: EASE }}
               onClick={(e) => e.stopPropagation()}
-              className="relative grid max-h-[90vh] w-full max-w-4xl overflow-y-auto rounded-3xl bg-white shadow-2xl md:grid-cols-[2fr_3fr] md:overflow-hidden"
+              className="relative grid max-h-[90vh] w-full max-w-4xl overflow-y-auto rounded-3xl bg-white shadow-2xl md:h-[85vh] md:max-h-[720px] md:grid-cols-[2fr_3fr] md:overflow-hidden"
             >
               <button
                 onClick={() => setSelected(null)}
@@ -178,12 +178,12 @@ export default function FellowsGrid({
               </button>
 
               {/* Portrait */}
-              <div className="relative aspect-[4/5] md:aspect-auto md:min-h-[560px]">
+              <div className="relative h-80 shrink-0 sm:h-96 md:h-full">
                 <Portrait fellow={selected} sizes="(max-width: 768px) 100vw, 40vw" />
               </div>
 
-              {/* Story */}
-              <div className="max-h-full overflow-y-auto p-7 sm:p-9">
+              {/* Story — scrolls independently when the text runs long */}
+              <div className="min-h-0 overflow-y-auto p-7 sm:p-9 md:h-full">
                 <motion.div
                   initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}

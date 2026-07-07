@@ -2,7 +2,17 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Users, ArrowUpRight, LogOut } from "lucide-react";
+import {
+  Users,
+  FileText,
+  Newspaper,
+  Inbox,
+  ArrowUpRight,
+  LogOut,
+  CalendarDays,
+  ShieldCheck,
+  ScrollText,
+} from "lucide-react";
 import { supabaseBrowser } from "@/lib/supabase/client";
 
 export default function AdminDashboard() {
@@ -51,14 +61,104 @@ export default function AdminDashboard() {
           </p>
         </Link>
 
-        <div className="rounded-2xl border border-dashed border-[#1A1A1A]/15 p-6">
-          <h2 className="text-lg font-semibold text-[#6B7280]">
-            Partners, stats &amp; pages
+        <Link
+          href="/admin/content"
+          className="group rounded-2xl border border-[#1A1A1A]/10 bg-white p-6 transition-all hover:border-[#6B21E8]/50 hover:shadow-[0_8px_24px_rgba(26,26,26,0.06)]"
+        >
+          <div className="flex items-start justify-between">
+            <FileText className="h-6 w-6 text-[#6B21E8]" />
+            <ArrowUpRight className="h-4 w-4 text-[#6B7280] transition-colors group-hover:text-[#6B21E8]" />
+          </div>
+          <h2 className="mt-4 text-lg font-semibold text-[#1A1A1A]">
+            Site content
           </h2>
-          <p className="mt-1 text-sm text-[#6B7280]/80">
-            Coming next — the same pattern extends to every section.
+          <p className="mt-1 text-sm text-[#6B7280]">
+            Every section&apos;s copy — hero, stats, partners, academy,
+            pillars, team, tiers, footer — with photo uploads.
           </p>
-        </div>
+        </Link>
+
+        <Link
+          href="/admin/posts"
+          className="group rounded-2xl border border-[#1A1A1A]/10 bg-white p-6 transition-all hover:border-[#6B21E8]/50 hover:shadow-[0_8px_24px_rgba(26,26,26,0.06)]"
+        >
+          <div className="flex items-start justify-between">
+            <Newspaper className="h-6 w-6 text-[#6B21E8]" />
+            <ArrowUpRight className="h-4 w-4 text-[#6B7280] transition-colors group-hover:text-[#6B21E8]" />
+          </div>
+          <h2 className="mt-4 text-lg font-semibold text-[#1A1A1A]">Blog</h2>
+          <p className="mt-1 text-sm text-[#6B7280]">
+            Write, publish, and unpublish posts with cover images.
+          </p>
+        </Link>
+
+        <Link
+          href="/admin/messages"
+          className="group rounded-2xl border border-[#1A1A1A]/10 bg-white p-6 transition-all hover:border-[#6B21E8]/50 hover:shadow-[0_8px_24px_rgba(26,26,26,0.06)]"
+        >
+          <div className="flex items-start justify-between">
+            <Inbox className="h-6 w-6 text-[#6B21E8]" />
+            <ArrowUpRight className="h-4 w-4 text-[#6B7280] transition-colors group-hover:text-[#6B21E8]" />
+          </div>
+          <h2 className="mt-4 text-lg font-semibold text-[#1A1A1A]">
+            Messages
+          </h2>
+          <p className="mt-1 text-sm text-[#6B7280]">
+            Contact-form submissions — partnership requests, program
+            enquiries, and everything else.
+          </p>
+        </Link>
+
+        <Link
+          href="/admin/audience"
+          className="group rounded-2xl border border-[#1A1A1A]/10 bg-white p-6 transition-all hover:border-[#6B21E8]/50 hover:shadow-[0_8px_24px_rgba(26,26,26,0.06)]"
+        >
+          <div className="flex items-start justify-between">
+            <CalendarDays className="h-6 w-6 text-[#6B21E8]" />
+            <ArrowUpRight className="h-4 w-4 text-[#6B7280] transition-colors group-hover:text-[#6B21E8]" />
+          </div>
+          <h2 className="mt-4 text-lg font-semibold text-[#1A1A1A]">
+            Audience
+          </h2>
+          <p className="mt-1 text-sm text-[#6B7280]">
+            Event registrations and newsletter subscribers — copy emails
+            straight into a Google Meet or Zoom invite.
+          </p>
+        </Link>
+
+        <Link
+          href="/admin/staff"
+          className="group rounded-2xl border border-[#1A1A1A]/10 bg-white p-6 transition-all hover:border-[#6B21E8]/50 hover:shadow-[0_8px_24px_rgba(26,26,26,0.06)]"
+        >
+          <div className="flex items-start justify-between">
+            <ShieldCheck className="h-6 w-6 text-[#6B21E8]" />
+            <ArrowUpRight className="h-4 w-4 text-[#6B7280] transition-colors group-hover:text-[#6B21E8]" />
+          </div>
+          <h2 className="mt-4 text-lg font-semibold text-[#1A1A1A]">
+            Staff & permissions
+          </h2>
+          <p className="mt-1 text-sm text-[#6B7280]">
+            Create team accounts and set what each person can do — admin,
+            editor, or viewer.
+          </p>
+        </Link>
+
+        <Link
+          href="/admin/audit"
+          className="group rounded-2xl border border-[#1A1A1A]/10 bg-white p-6 transition-all hover:border-[#6B21E8]/50 hover:shadow-[0_8px_24px_rgba(26,26,26,0.06)]"
+        >
+          <div className="flex items-start justify-between">
+            <ScrollText className="h-6 w-6 text-[#6B21E8]" />
+            <ArrowUpRight className="h-4 w-4 text-[#6B7280] transition-colors group-hover:text-[#6B21E8]" />
+          </div>
+          <h2 className="mt-4 text-lg font-semibold text-[#1A1A1A]">
+            Audit log
+          </h2>
+          <p className="mt-1 text-sm text-[#6B7280]">
+            Every change across the site — who did what, when, with the full
+            before/after record.
+          </p>
+        </Link>
       </div>
     </main>
   );

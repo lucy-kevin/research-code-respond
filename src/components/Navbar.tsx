@@ -12,6 +12,8 @@ const NAV_LINKS = [
   { label: "The Pillars", href: "/pillars" },
   { label: "Academy", href: "/academy" },
   { label: "Team", href: "/team" },
+  { label: "Events", href: "/events" },
+  { label: "Blog", href: "/blog" },
   { label: "Ecosystem", href: "#", hasFlyout: true },
 ];
 
@@ -19,8 +21,9 @@ const ECOSYSTEM_LINKS = [
   { label: "The Three Pillars", meta: "Research, education, outreach", href: "/pillars" },
   { label: "Academy — 2026 Bootcamp", meta: "12-week engineering intensive", href: "/academy" },
   { label: "Team & Values", meta: "Who we are and how we work", href: "/team" },
+  { label: "Events", meta: "Hackathons, demo days, and workshops", href: "/events" },
   { label: "Partner with us", meta: "Four ways to support the work", href: "/partner" },
-  { label: "Write to us", meta: "info@researchcoderesolve.org", href: "mailto:info@researchcoderesolve.org" },
+  { label: "Contact us", meta: "Project ideas, partnerships, programs", href: "/contact" },
 ];
 
 export default function Navbar() {
@@ -77,13 +80,7 @@ export default function Navbar() {
 
             <div className="hidden items-center gap-6 lg:flex">
               <Link
-                href="/academy"
-                className="text-[15px] text-[#4B5563] transition-colors duration-200 hover:text-[#1A1A1A]"
-              >
-                Apply
-              </Link>
-              <Link
-                href="/partner"
+                href="/contact"
                 className="inline-flex items-center rounded-full bg-[#1A1A1A] px-6 py-3 text-[15px] font-medium text-white transition-colors duration-300 hover:bg-[#6B21E8]"
               >
                 Contact us
@@ -171,6 +168,8 @@ export default function Navbar() {
                   { label: "The Pillars", href: "/pillars" },
                   { label: "Academy", href: "/academy" },
                   { label: "Team", href: "/team" },
+                  { label: "Events", href: "/events" },
+                  { label: "Blog", href: "/blog" },
                   { label: "Partner with us", href: "/partner" },
                 ].map((link) => (
                   <Link

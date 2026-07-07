@@ -19,10 +19,18 @@ interface TimelineItem {
 
 interface RadialOrbitalTimelineProps {
   timelineData: TimelineItem[];
+  badge?: string;
+  title?: string;
 }
+
+/* Hovering a node opens its card immediately, so visitors discover
+   there's content behind each one. */
+const HOVER_OPEN_DELAY = 0;
 
 export default function RadialOrbitalTimeline({
   timelineData,
+  badge = "Pillar 1",
+  title = "Research & Development",
 }: RadialOrbitalTimelineProps) {
   const [expandedItems, setExpandedItems] = useState<Record<number, boolean>>({});
   const [rotationAngle, setRotationAngle] = useState<number>(0);
@@ -32,6 +40,7 @@ export default function RadialOrbitalTimeline({
   const containerRef = useRef<HTMLDivElement>(null);
   const orbitRef = useRef<HTMLDivElement>(null);
   const nodeRefs = useRef<Record<number, HTMLDivElement | null>>({});
+  const hoverTimer = useRef<NodeJS.Timeout | null>(null);
 
   const handleContainerClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === containerRef.current || e.target === orbitRef.current) {
@@ -66,6 +75,42 @@ export default function RadialOrbitalTimeline({
       return newState;
     });
   };
+
+  const handleNodeEnter = (id: number) => {
+    if (hoverTimer.current) clearTimeout(hoverTimer.current);
+    hoverTimer.current = setTimeout(() => {
+      toggleItemIfClosed(id);
+    }, HOVER_OPEN_DELAY);
+  };
+
+  const handleNodeLeave = () => {
+    if (hoverTimer.current) clearTimeout(hoverTimer.current);
+  };
+
+  const toggleItemIfClosed = (id: number) => {
+    setExpandedItems((prev) => {
+      if (prev[id]) return prev;
+      const newState: Record<number, boolean> = {};
+      newState[id] = true;
+      setActiveNodeId(id);
+      setAutoRotate(false);
+      const relatedItems =
+        timelineData.find((item) => item.id === id)?.relatedIds || [];
+      const newPulseEffect: Record<number, boolean> = {};
+      relatedItems.forEach((relId) => {
+        newPulseEffect[relId] = true;
+      });
+      setPulseEffect(newPulseEffect);
+      centerViewOnNode(id);
+      return newState;
+    });
+  };
+
+  useEffect(() => {
+    return () => {
+      if (hoverTimer.current) clearTimeout(hoverTimer.current);
+    };
+  }, []);
 
   useEffect(() => {
     let rotationTimer: NodeJS.Timeout | undefined;
@@ -116,8 +161,8 @@ export default function RadialOrbitalTimeline({
       onClick={handleContainerClick}
     >
       <div className="absolute top-8 left-8 z-30 pointer-events-none">
-        <span className="text-xs font-medium tracking-wide text-[#6B21E8] block mb-1">Pillar 1</span>
-        <h3 className="text-xl font-medium tracking-tight text-[#1A1A1A]">Research & Development</h3>
+        <span className="text-xs font-medium tracking-wide text-[#6B21E8] block mb-1">{badge}</span>
+        <h3 className="text-xl font-medium tracking-tight text-[#1A1A1A]">{title}</h3>
       </div>
 
       <div className="relative w-full max-w-4xl h-full flex items-center justify-center">
@@ -157,6 +202,8 @@ export default function RadialOrbitalTimeline({
                   e.stopPropagation();
                   toggleItem(item.id);
                 }}
+                onMouseEnter={() => handleNodeEnter(item.id)}
+                onMouseLeave={handleNodeLeave}
               >
                 {/* Outer Energy Layer Halo */}
                 <div

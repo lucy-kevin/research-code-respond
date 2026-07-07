@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import {
   FlaskConical,
@@ -9,184 +10,174 @@ import {
   BookOpenCheck,
   type LucideIcon,
 } from "lucide-react";
+import { SITE_CONTENT } from "@/data/site-content";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
-type ValueCell = {
-  kind: "value";
-  code: string;
-  title: string;
-  desc: string;
-  icon: LucideIcon;
-  span: string;
-};
+type TeamContent = typeof SITE_CONTENT.team;
 
-type TeamCell = {
-  kind: "team";
-  name: string;
-  role: string;
-  initials: string;
-  span: string;
-};
-
-/* Asymmetric 4-column bento: values interleaved with team bios */
-const CELLS: (ValueCell | TeamCell)[] = [
-  {
-    kind: "value",
-    code: "V.01",
-    title: "Build on Proof",
-    desc: "No system ships on assumption. Feasibility studies, validated datasets, and measured impact precede every line of production code.",
-    icon: FlaskConical,
-    span: "md:col-span-2",
-  },
-  {
-    kind: "team",
-    name: "Julian Zaabu Kayikayi",
-    role: "Co-Founder — Research Lead",
-    initials: "JK",
-    span: "md:col-span-1",
-  },
-  {
-    kind: "value",
-    code: "V.02",
-    title: "Build with Community",
-    desc: "The people a system serves are its first reviewers, not its last.",
-    icon: Users,
-    span: "md:col-span-1",
-  },
-  {
-    kind: "team",
-    name: "Kevin Ziyada Aseru",
-    role: "Co-Founder — Engineering",
-    initials: "KA",
-    span: "md:col-span-1",
-  },
-  {
-    kind: "value",
-    code: "V.03",
-    title: "Build with Integrity",
-    desc: "Ethical data practice, honest reporting of failures, transparent funding.",
-    icon: ShieldCheck,
-    span: "md:col-span-1",
-  },
-  {
-    kind: "team",
-    name: "Suzan Ayikoru",
-    role: "Academy & Programs",
-    initials: "SA",
-    span: "md:col-span-1",
-  },
-  {
-    kind: "value",
-    code: "V.04",
-    title: "Build to Empower",
-    desc: "Every project transfers capability outward — skills, tools, and ownership stay local.",
-    icon: Zap,
-    span: "md:col-span-1",
-  },
-  {
-    kind: "value",
-    code: "V.05",
-    title: "Build on Open Knowledge",
-    desc: "Research, code, and datasets published in the open by default. Black boxes end here — knowledge compounds when it is shared, cited, forked, and improved by the region it serves.",
-    icon: BookOpenCheck,
-    span: "md:col-span-2",
-  },
-  {
-    kind: "team",
-    name: "Elizabeth Saidi",
-    role: "Community & Outreach",
-    initials: "ES",
-    span: "md:col-span-2",
-  },
+const VALUE_ICONS: LucideIcon[] = [
+  FlaskConical,
+  Users,
+  ShieldCheck,
+  Zap,
+  BookOpenCheck,
 ];
 
-export default function Team() {
+export default function Team({
+  content = SITE_CONTENT.team,
+}: {
+  content?: TeamContent;
+}) {
   return (
-    <section id="ecosystem" className="bg-[#FAF9F5] px-6 py-28 lg:px-8">
+    <section id="ecosystem" className="bg-[#FAF9F5] px-6 py-24 lg:px-8">
       <div className="mx-auto max-w-7xl">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.8, ease: EASE }}
-          className="mb-16 max-w-2xl"
+          className="mb-14 max-w-2xl"
         >
           <p className="text-sm font-medium tracking-wide text-[#6B21E8]">
-            Team &amp; Values
+            {content.eyebrow}
           </p>
-          <h2 className="mt-4 text-3xl font-medium tracking-tight text-[#1A1A1A] sm:text-5xl">
-            The people, and what they refuse to compromise.
+          <h2 className="mt-4 font-display text-4xl uppercase tracking-tight text-[#1A1A1A] sm:text-5xl">
+            {content.heading}
           </h2>
           <p className="mt-5 text-base leading-relaxed text-[#6B7280]">
-            Five structural values, four humans in Kampala holding the studio
-            to them.
+            {content.subheading}
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-[#1A1A1A]/10 bg-[#1A1A1A]/10 md:grid-cols-4">
-          {CELLS.map((cell, i) => (
-            <motion.div
-              key={cell.kind === "value" ? cell.code : cell.name}
-              initial={{ opacity: 0, y: 20 }}
+        {/* ── Mission & vision ── */}
+        <div className="mb-16 grid gap-5 md:grid-cols-2">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.7, ease: EASE }}
+            className="rounded-2xl bg-[#6B21E8] p-8"
+          >
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#E9D5FF]">
+              Mission
+            </p>
+            <p className="mt-4 text-lg leading-relaxed text-white">
+              {content.mission}
+            </p>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.7, delay: 0.1, ease: EASE }}
+            className="rounded-2xl border border-[#1A1A1A]/10 bg-white p-8"
+          >
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#6B21E8]">
+              Vision
+            </p>
+            <p className="mt-4 text-lg leading-relaxed text-[#1A1A1A]">
+              {content.vision}
+            </p>
+          </motion.div>
+        </div>
+
+        {/* ── The team ── */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.7, ease: EASE }}
+          className="text-xs font-semibold uppercase tracking-[0.2em] text-[#6B7280]"
+        >
+          {content.membersLabel}
+        </motion.p>
+        <div className="mt-6 grid grid-cols-2 gap-x-5 gap-y-10 md:grid-cols-3 lg:grid-cols-5">
+          {content.members.map((member, i) => (
+            <motion.figure
+              key={`${member.name}-${i}`}
+              initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-40px" }}
               transition={{ duration: 0.6, delay: (i % 4) * 0.08, ease: EASE }}
-              whileHover={{ scale: 1.015 }}
-              className={`group relative bg-white p-7 transition-shadow duration-500 hover:z-10 hover:shadow-[0_0_0_1px_#6B21E8,0_8px_24px_rgba(26,26,26,0.08)] lg:p-8 ${cell.span}`}
+              className="group"
             >
-              {cell.kind === "value" ? (
-                <ValueCard cell={cell} />
-              ) : (
-                <TeamCard cell={cell} />
-              )}
-            </motion.div>
+              <div className="relative aspect-[4/5] overflow-hidden rounded-2xl border border-[#1A1A1A]/8 bg-white">
+                {member.photoUrl ? (
+                  <Image
+                    src={member.photoUrl}
+                    alt={member.name}
+                    fill
+                    sizes="(max-width: 1024px) 50vw, 25vw"
+                    className="object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+                  />
+                ) : (
+                  <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-[#6B21E8] to-[#4C0F9E]">
+                    <span className="font-display text-4xl text-white/90">
+                      {member.initials}
+                    </span>
+                  </div>
+                )}
+              </div>
+              <figcaption className="mt-4">
+                <p className="text-base font-medium text-[#1A1A1A]">
+                  {member.name}
+                </p>
+                <p className="mt-0.5 text-sm text-[#6B7280]">{member.role}</p>
+              </figcaption>
+            </motion.figure>
           ))}
+        </div>
+
+        {/* ── Values ── */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.7, ease: EASE }}
+          className="mt-20 text-xs font-semibold uppercase tracking-[0.2em] text-[#6B7280]"
+        >
+          {content.valuesLabel}
+        </motion.p>
+        <div className="mt-6 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {content.values.map((value, i) => {
+            const Icon = VALUE_ICONS[i % VALUE_ICONS.length];
+            return (
+              <motion.div
+                key={`${value.code}-${i}`}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.6, delay: (i % 3) * 0.08, ease: EASE }}
+                className="group relative flex min-h-[220px] flex-col rounded-2xl bg-[#4C0F9E] p-7 transition-[transform,background-color] duration-300 ease-out hover:scale-[1.03] hover:bg-[#6B21E8]"
+              >
+                <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-[#C084FC]">
+                  {value.code}
+                </p>
+                <h3 className="mt-5 text-xl font-semibold leading-snug text-white">
+                  {value.title}
+                </h3>
+                <p className="mt-3 flex-1 pr-10 text-sm leading-relaxed text-[#E9D5FF]/85">
+                  {value.desc}
+                </p>
+
+                {/* Notched corner with the value's icon, problem-card style */}
+                <span
+                  aria-hidden
+                  className="absolute bottom-0 right-0 flex h-15 w-16 items-end justify-end rounded-tl-2xl bg-[#FAF9F5] pl-1.5 pt-1.5 transition-colors duration-300 ease-out group-hover:bg-transparent"
+                >
+                  <span className="flex h-12 w-12 items-center justify-center rounded-full bg-[#6B21E8] text-white transition-colors duration-300 ease-out group-hover:bg-[#0A0A0A]">
+                    <Icon
+                      className="h-5 w-5 transition-transform duration-300 ease-out group-hover:scale-110"
+                      strokeWidth={1.75}
+                    />
+                  </span>
+                </span>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>
-  );
-}
-
-function ValueCard({ cell }: { cell: ValueCell }) {
-  const Icon = cell.icon;
-  return (
-    <div className="flex h-full min-h-[180px] flex-col">
-      <div className="flex items-center justify-between">
-        <span className="font-mono text-[10px] tracking-[0.25em] text-[#6B7280] transition-colors duration-300 group-hover:text-[#6B21E8]">
-          {cell.code}
-        </span>
-        <Icon
-          className="h-4 w-4 text-[#6B7280] transition-colors duration-300 group-hover:text-[#6B21E8]"
-          strokeWidth={1.75}
-        />
-      </div>
-      <h3 className="mt-6 font-mono text-base text-[#1A1A1A]">{cell.title}</h3>
-      <p className="mt-2.5 text-sm leading-relaxed text-[#6B7280]">
-        {cell.desc}
-      </p>
-    </div>
-  );
-}
-
-function TeamCard({ cell }: { cell: TeamCell }) {
-  return (
-    <div className="flex h-full min-h-[180px] flex-col justify-between">
-      <div className="flex items-center justify-between">
-        <span className="font-mono text-[10px] tracking-[0.25em] text-[#6B7280] transition-colors duration-300 group-hover:text-[#6B21E8]">
-          TEAM
-        </span>
-        <span className="h-1.5 w-1.5 rounded-full bg-[#1A1A1A]/20 transition-colors duration-300 group-hover:bg-[#6B21E8]" />
-      </div>
-      <div>
-        <div className="flex h-14 w-14 items-center justify-center rounded-full border border-[#1A1A1A]/10 bg-[#E9D5FF]/50 text-sm font-medium text-[#4C0F9E] transition-colors duration-500 group-hover:border-[#6B21E8]">
-          {cell.initials}
-        </div>
-        <h3 className="mt-5 text-base font-medium text-[#1A1A1A]">{cell.name}</h3>
-        <p className="mt-1 font-mono text-[12px] text-[#6B7280]">
-          {cell.role}
-        </p>
-      </div>
-    </div>
   );
 }

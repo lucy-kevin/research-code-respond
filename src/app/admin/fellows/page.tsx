@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft, Plus, Pencil, Trash2, Star } from "lucide-react";
 import { supabaseBrowser } from "@/lib/supabase/client";
+import { compressImage } from "@/lib/compress-image";
 
 interface FellowRow {
   id: string;
@@ -117,11 +118,11 @@ export default function AdminFellows() {
       let photo_url = form.photo_url;
 
       if (photoFile) {
-        const ext = photoFile.name.split(".").pop() || "jpg";
+        const { blob, ext, contentType } = await compressImage(photoFile, 1400);
         const path = `fellows/${form.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}-${Date.now()}.${ext}`;
         const { error: upErr } = await supabase.storage
           .from("photos")
-          .upload(path, photoFile, { upsert: true });
+          .upload(path, blob, { upsert: true, contentType });
         if (upErr) throw upErr;
         photo_url = supabase.storage.from("photos").getPublicUrl(path)
           .data.publicUrl;

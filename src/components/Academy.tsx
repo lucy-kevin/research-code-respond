@@ -10,24 +10,19 @@ import {
   ArrowUpRight,
   Activity,
 } from "lucide-react";
+import { SITE_CONTENT } from "@/data/site-content";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
-const METRICS = [
-  { value: "12", unit: "WKS", label: "Bootcamp Duration", sub: "Fully online, starts June 1, 2026" },
-  { value: "30", unit: "/50", label: "Spots for Women in Tech", sub: "60% of the cohort, reserved by design" },
-  { value: "05", unit: "TRK", label: "Specialist Tracks", sub: "One learner, one deep vertical" },
-];
+type AcademyContent = typeof SITE_CONTENT.academy;
 
-const TRACKS = [
-  { icon: PenTool, label: "Human-Centered Design" },
-  { icon: BarChart3, label: "Data for Social Good" },
-  { icon: Code2, label: "Frontend Web Development" },
-  { icon: Smartphone, label: "Mobile Development" },
-  { icon: Server, label: "Backend Engineering" },
-];
+const TRACK_ICONS = [PenTool, BarChart3, Code2, Smartphone, Server];
 
-export default function Academy() {
+export default function Academy({
+  content = SITE_CONTENT.academy,
+}: {
+  content?: AcademyContent;
+}) {
   return (
     <section id="academy" className="relative overflow-hidden bg-[#FAF9F5] px-6 py-28 lg:px-8">
       <div className="relative mx-auto max-w-7xl">
@@ -41,22 +36,20 @@ export default function Academy() {
         >
           <div className="max-w-xl">
             <p className="text-sm font-medium tracking-wide text-[#6B21E8]">
-              Academy
+              {content.eyebrow}
             </p>
-            <h2 className="mt-4 text-3xl font-medium tracking-tight text-[#1A1A1A] sm:text-5xl">
-              Research Code Academy — Bootcamp 2026.
+            <h2 className="mt-4 font-display text-4xl uppercase tracking-tight text-[#1A1A1A] sm:text-5xl">
+              {content.heading}
             </h2>
             <p className="mt-5 text-base leading-relaxed text-[#6B7280]">
-              A twelve-week, fully online program launching June 1, 2026 —
-              fifty seats, thirty of them reserved for women in tech, across
-              five specialist tracks.
+              {content.subheading}
             </p>
           </div>
           <a
-            href="#connect"
+            href="/partner"
             className="group inline-flex w-fit items-center gap-2 rounded-full bg-[#1A1A1A] px-7 py-3.5 text-[15px] font-medium text-white transition-colors duration-300 hover:bg-[#6B21E8]"
           >
-            Apply for 2026
+            {content.applyLabel}
             <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </a>
         </motion.div>
@@ -74,20 +67,20 @@ export default function Academy() {
             <div className="flex items-center gap-3">
               <Activity className="h-3.5 w-3.5 text-[#6B21E8]" />
               <span className="font-mono text-[11px] tracking-[0.2em] text-[#1A1A1A]">
-                RCR.ACADEMY / COHORT-2026 / LIVE
+                {content.toolbarText}
               </span>
             </div>
             <span className="flex items-center gap-2 font-mono text-[10px] text-[#6B7280]">
               <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#6B21E8]" />
-              APPLICATIONS IN REVIEW
+              {content.statusText}
             </span>
           </div>
 
           {/* Metric cells */}
           <div className="grid divide-y divide-[#1A1A1A]/8 md:grid-cols-3 md:divide-x md:divide-y-0">
-            {METRICS.map((metric, i) => (
+            {content.metrics.map((metric, i) => (
               <motion.div
-                key={metric.label}
+                key={`${metric.label}-${i}`}
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
@@ -114,14 +107,14 @@ export default function Academy() {
           <div className="border-t border-[#1A1A1A]/8 px-8 py-6">
             <div className="mb-3 flex items-center justify-between font-mono text-[11px]">
               <span className="tracking-[0.2em] text-[#6B7280]">
-                WOMEN-IN-TECH ALLOCATION
+                {content.progressLabel}
               </span>
-              <span className="text-[#6B21E8]">30 / 50 — 60%</span>
+              <span className="text-[#6B21E8]">{content.progressText}</span>
             </div>
             <div className="h-1.5 w-full overflow-hidden rounded-full bg-[#1A1A1A]/8">
               <motion.div
                 initial={{ width: 0 }}
-                whileInView={{ width: "60%" }}
+                whileInView={{ width: `${content.progressPercent}%` }}
                 viewport={{ once: true }}
                 transition={{ duration: 1.4, delay: 0.4, ease: EASE }}
                 className="h-full rounded-full bg-[#6B21E8]"
@@ -134,11 +127,11 @@ export default function Academy() {
             <span className="mr-2 font-mono text-[11px] tracking-[0.2em] text-[#6B7280]">
               TRACKS //
             </span>
-            {TRACKS.map((track, i) => {
-              const Icon = track.icon;
+            {content.tracks.map((track, i) => {
+              const Icon = TRACK_ICONS[i % TRACK_ICONS.length];
               return (
                 <motion.span
-                  key={track.label}
+                  key={`${track}-${i}`}
                   initial={{ opacity: 0, scale: 0.92 }}
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
@@ -146,7 +139,7 @@ export default function Academy() {
                   className="inline-flex items-center gap-2 rounded-full bg-[#E9D5FF]/60 px-4 py-2 text-[13px] font-medium text-[#4C0F9E] transition-colors duration-300 hover:bg-[#E9D5FF]"
                 >
                   <Icon className="h-3.5 w-3.5 text-[#6B21E8]" strokeWidth={1.75} />
-                  {track.label}
+                  {track}
                 </motion.span>
               );
             })}

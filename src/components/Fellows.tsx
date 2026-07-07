@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { FELLOWS, type Fellow } from "@/data/fellows";
 import { countriesOf } from "@/lib/countries";
+import { SITE_CONTENT } from "@/data/site-content";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -16,52 +16,18 @@ function excerpt(text: string, max = 200) {
   return cut.slice(0, cut.lastIndexOf(" ")) + "…";
 }
 
-function RotatingQuote({ quoted }: { quoted: Fellow[] }) {
-  const [idx, setIdx] = useState(0);
-
-  useEffect(() => {
-    if (quoted.length < 2) return;
-    const timer = setInterval(
-      () => setIdx((i) => (i + 1) % quoted.length),
-      7000
-    );
-    return () => clearInterval(timer);
-  }, [quoted.length]);
-
-  if (quoted.length === 0) return null;
-  const fellow = quoted[idx % quoted.length];
-
-  return (
-    <div className="mx-auto mt-14 min-h-[150px] max-w-2xl text-center">
-      <AnimatePresence mode="wait">
-        <motion.blockquote
-          key={fellow.name}
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -16 }}
-          transition={{ duration: 0.6, ease: EASE }}
-        >
-          <p className="text-base italic leading-relaxed text-[#4B5563] sm:text-lg">
-            &ldquo;{excerpt(fellow.why)}&rdquo;
-          </p>
-          <footer className="mt-4 text-sm">
-            <span className="font-semibold text-[#1A1A1A]">{fellow.name}</span>
-            <span className="text-[#6B7280]"> — {fellow.country}</span>
-          </footer>
-        </motion.blockquote>
-      </AnimatePresence>
-    </div>
-  );
-}
-
 export default function Fellows({
   fellows = FELLOWS,
+  content = SITE_CONTENT.fellowsSection,
 }: {
   fellows?: Fellow[];
+  content?: typeof SITE_CONTENT.fellowsSection;
 }) {
   const featured = fellows.filter((f) => f.featured && f.photo);
-  const quoted = featured.filter((f) => f.why.length > 120);
   const countries = countriesOf(fellows);
+  const subheading = content.subheadingTemplate
+    .replace("{count}", String(fellows.length))
+    .replace("{countries}", String(countries.length));
 
   return (
     <section className="bg-[#FAF9F5] px-6 py-24 lg:px-8">
@@ -74,11 +40,11 @@ export default function Fellows({
           className="mx-auto max-w-2xl text-center"
         >
           <h2 className="font-display text-5xl uppercase tracking-tight text-[#1A1A1A] sm:text-6xl">
-            Meet our <span className="text-[#6B21E8]">fellows</span>
+            {content.headingPrefix}{" "}
+            <span className="text-[#6B21E8]">{content.headingAccent}</span>
           </h2>
           <p className="mt-5 text-base leading-relaxed text-[#6B7280]">
-            {fellows.length} builders from {countries.length} countries in the
-            2026 cohort — hover to meet a few of them.
+            {subheading}
           </p>
         </motion.div>
 
@@ -125,9 +91,6 @@ export default function Fellows({
           </div>
         </motion.div>
 
-        {/* Rotating "why I joined" voices */}
-        <RotatingQuote quoted={quoted} />
-
         {/* Countries, shown as a compact flag chip row */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -162,7 +125,7 @@ export default function Fellows({
             href="/academy#fellows"
             className="group inline-flex items-center gap-1.5 text-sm font-semibold text-[#6B21E8] transition-colors hover:text-[#4C0F9E]"
           >
-            Meet the full cohort
+            {content.linkLabel}
             <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </Link>
         </motion.div>

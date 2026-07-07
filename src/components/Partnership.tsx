@@ -2,75 +2,17 @@
 
 import { motion } from "framer-motion";
 import { Check, ArrowUpRight } from "lucide-react";
+import { SITE_CONTENT } from "@/data/site-content";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
-type Tier = {
-  name: string;
-  code: string;
-  amount: string;
-  cadence: string;
-  desc: string;
-  features: string[];
-  popular?: boolean;
-};
+type PartnershipContent = typeof SITE_CONTENT.partnership;
 
-const TIERS: Tier[] = [
-  {
-    name: "Bronze",
-    code: "T.01",
-    amount: "$10",
-    cadence: "/ month",
-    desc: "Keep a learner connected — data bundles and platform access.",
-    features: [
-      "Named in the annual transparency report",
-      "Quarterly research digest",
-      "Community Discord access",
-    ],
-  },
-  {
-    name: "Silver",
-    code: "T.02",
-    amount: "$50",
-    cadence: "/ month",
-    desc: "Sponsor a bootcamp seat's tooling, cloud credits, and materials.",
-    features: [
-      "Everything in Bronze",
-      "Logo on the Academy cohort page",
-      "Early access to published datasets",
-      "Invitations to demo days",
-    ],
-    popular: true,
-  },
-  {
-    name: "Gold",
-    code: "T.03",
-    amount: "$150",
-    cadence: "/ month",
-    desc: "Underwrite a full women-in-tech scholarship each cohort.",
-    features: [
-      "Everything in Silver",
-      "Named scholarship attribution",
-      "Direct hiring pipeline to graduates",
-      "Co-branded research briefs",
-    ],
-  },
-  {
-    name: "Platinum",
-    code: "T.04",
-    amount: "Custom",
-    cadence: "partnership",
-    desc: "Institutional alliances — research programs, policy work, infrastructure.",
-    features: [
-      "Everything in Gold",
-      "Joint research & publication programs",
-      "Advisory seat on studio roadmap",
-      "Regional deployment partnerships",
-    ],
-  },
-];
-
-export default function Partnership() {
+export default function Partnership({
+  content = SITE_CONTENT.partnership,
+}: {
+  content?: PartnershipContent;
+}) {
   return (
     <section id="connect" className="relative overflow-hidden bg-[#FAF9F5] px-6 py-28 lg:px-8">
       <div className="relative mx-auto max-w-7xl">
@@ -82,22 +24,21 @@ export default function Partnership() {
           className="mb-16 max-w-2xl"
         >
           <p className="text-sm font-medium tracking-wide text-[#6B21E8]">
-            Partner with us
+            {content.eyebrow}
           </p>
-          <h2 className="mt-4 text-3xl font-medium tracking-tight text-[#1A1A1A] sm:text-5xl">
-            Fund work that stays in the region.
+          <h2 className="mt-4 font-display text-4xl uppercase tracking-tight text-[#1A1A1A] sm:text-5xl">
+            {content.heading}
           </h2>
           <p className="mt-5 text-base leading-relaxed text-[#6B7280]">
-            Four modular tiers. Every shilling is accounted for in the open —
-            our transparency reports publish where partner capital goes.
+            {content.subheading}
           </p>
         </motion.div>
 
         {/* Tier cards */}
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
-          {TIERS.map((tier, i) => (
+          {content.tiers.map((tier, i) => (
             <motion.div
-              key={tier.name}
+              key={`${tier.name}-${i}`}
               initial={{ opacity: 0, y: 28 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
@@ -108,7 +49,6 @@ export default function Partnership() {
                   : "border-[#1A1A1A]/10 bg-white hover:border-[#6B21E8]/40"
               }`}
             >
-              {/* Most Popular ribbon */}
               {tier.popular && (
                 <span className="absolute -top-3.5 left-1/2 inline-flex -translate-x-1/2 items-center whitespace-nowrap rounded-full bg-[#6B21E8] px-4 py-1.5 text-xs font-medium text-[#E9D5FF]">
                   Most popular
@@ -142,8 +82,8 @@ export default function Partnership() {
               </p>
 
               <ul className="mt-6 flex flex-1 flex-col gap-3">
-                {tier.features.map((feature) => (
-                  <li key={feature} className="flex items-start gap-2.5">
+                {tier.features.map((feature, j) => (
+                  <li key={`${feature}-${j}`} className="flex items-start gap-2.5">
                     <Check
                       className={`mt-0.5 h-3.5 w-3.5 shrink-0 ${
                         tier.popular ? "text-[#6B21E8]" : "text-[#6B7280]"
@@ -180,9 +120,7 @@ export default function Partnership() {
           transition={{ duration: 0.8, delay: 0.3, ease: EASE }}
           className="mx-auto mt-14 max-w-2xl text-center text-base leading-relaxed text-[#6B7280]"
         >
-          You don&apos;t need to give $150. You can give $10... In-kind support,
-          mentorship time, software licences, or cloud credits are equally
-          welcome.
+          {content.callout}
         </motion.p>
       </div>
     </section>
